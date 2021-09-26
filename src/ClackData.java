@@ -88,6 +88,21 @@ public class ClackData {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof ClackData) {
+            ClackData other = (ClackData) obj;
+            return other.userName.equals(this.userName)
+                    && other.date.equals(this.date)
+                    && other.type == this.type;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public int hashCode() {
         int result = 17;
         result = 37 * result + userName.hashCode();
