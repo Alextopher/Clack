@@ -86,4 +86,13 @@ public class ClackData {
     public Date getDate() {
         return date;
     }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 37 * result + userName.hashCode();
+        result = 37 * result + type;
+        result = 37 * result + date.hashCode();
+        return result;
+    }
 }
