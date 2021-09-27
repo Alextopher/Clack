@@ -8,7 +8,7 @@ By Humaira Rezaie and Christopher Mahoney.
 - [ ] Git practice
 - [x] Correctly written ClackData
 - [x] Correctly written FileClackData
-- [ ] Correctly written MessageClackData
+- [ ] Correctly written data.MessageClackData
 - [ ] Correctly written ClackServer 
 - [x] Correctly written ClackClient
 - [ ] Correctly written and running TestClackData

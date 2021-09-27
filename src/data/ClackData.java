@@ -1,3 +1,5 @@
+package data;
+
 import java.util.Date;
 
 public class ClackData {
@@ -109,5 +111,14 @@ public class ClackData {
         result = 37 * result + type;
         result = 37 * result + date.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClackData{" +
+                "userName='" + userName + '\'' +
+                ", type=" + type +
+                ", date=" + date +
+                '}';
     }
 }
