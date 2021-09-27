@@ -9,7 +9,7 @@ By Humaira Rezaie and Christopher Mahoney.
 - [x] Correctly written ClackData
 - [x] Correctly written FileClackData
 - [ ] Correctly written data.MessageClackData
-- [ ] Correctly written ClackServer 
+- [ ] Correctly written main.ClackServer 
 - [x] Correctly written ClackClient
 - [ ] Correctly written and running TestClackData
 - [ ] Correctly written and running TestClackServer

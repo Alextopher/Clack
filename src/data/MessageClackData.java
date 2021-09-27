@@ -1,45 +1,46 @@
 package data;
 
+/**
+ * String representing instant message
+ */
 public class MessageClackData extends ClackData {
-
-    /**
-     * String representing instant message
-     */
-    private String userName;
-    private String message;
-    private Integer type;
 
     /**
      * @param userName String representing name of client user.
      * @param message String representing message of client user.
      * @param type Integer representing the type of data stored.
      */
+    private String userName;
+    private String message;
+    private Integer type;
 
+
+    /**
+     * Super constructor to set up username, message, and type
+     */
     public MessageClackData(String userName, String message, int type) {
         super(userName, type);
         this.message = message;
     }
 
-    /**
-     * Super constructor to set up username, message, and type
-     */
-
-    public MessageClackData() {
-        new MessageClackData("Anon", null, CONSTANT_UNKNOWN);
-    }
 
     /**
      * default constructor that call another constructor. userName is set to "Anon".
      */
-
-    public String getMessage() {
-        return message;
+    public MessageClackData() {
+        new MessageClackData("Anon", null, CONSTANT_UNKNOWN);
     }
+
 
     /**
      * implemented here to return instant message.
      * @return instant message
      */
+    public String getMessage() {
+        return message;
+    }
+
+
 
 
     @Override
