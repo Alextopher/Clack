@@ -55,14 +55,14 @@ public class ClackData {
      * @param type CONSTANT_LISTUSERS, CONSTANT_LOGOUT, CONSTANT_SENDMESSAGE, CONSTANT_SENDFILE
      */
     public ClackData(int type) {
-        new ClackData("Anon", type);
+        this("Anon", type);
     }
 
     /**
      * Default constructor. userName is set to "Anon". date is set to current time. type is set to CONSTANT_UNKNOWN
      */
     public ClackData() {
-        new ClackData(CONSTANT_UNKNOWN);
+        this(CONSTANT_UNKNOWN);
     }
 
     /**

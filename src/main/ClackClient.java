@@ -136,8 +136,8 @@ public class ClackClient {
     public int hashCode() {
         int result = 17;
         result = 37 * result + super.hashCode();
-        result = 37 * result + hostName.hashCode();
-        result = 37 * result + userName.hashCode();
+        if (hostName != null) result = 37 * result + hostName.hashCode();
+        if (userName != null) result = 37 * result + userName.hashCode();
         result = 37 * result + Boolean.hashCode(closeConnection);
         result = 37 * result + port;
         // Not sure if we should compare dataToSendToServer and dataToReceiveFromServer

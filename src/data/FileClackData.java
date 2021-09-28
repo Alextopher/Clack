@@ -62,8 +62,9 @@ public class FileClackData extends ClackData {
         }
         if (obj instanceof FileClackData) {
             FileClackData other = (FileClackData) obj;
+
             // We don't compare file contents because it would be expensive and "filename" should be good enough
-            return other.fileName.equals(this.fileName);
+            return super.equals(obj) && other.fileName.equals(this.fileName);
         } else {
             return false;
         }
@@ -73,7 +74,7 @@ public class FileClackData extends ClackData {
     public int hashCode() {
         int result = 17;
         result = 37 * result + super.hashCode();
-        result = 37 * result + fileName.hashCode();
+        if (fileName != null) result = 37 * result + fileName.hashCode();
         // We don't compare file contents because it would be expensive and "filename" should be good enough
         // if this is a wrong assumptions please let us know!
         return result;
