@@ -5,18 +5,18 @@ By Humaira Rezaie and Christopher Mahoney.
 
 ## Part 1
 ###TODO list:
-- [ ] Git practice
+- [x] Git practice
 - [x] Correctly written ClackData
 - [x] Correctly written FileClackData
-- [ ] Correctly written data.MessageClackData
-- [ ] Correctly written main.ClackServer 
+- [x] Correctly written MessageClackData
+- [x] Correctly written ClackServer 
 - [x] Correctly written ClackClient
-- [ ] Correctly written and running TestClackData
+- [x] Correctly written and running TestClackData
 - [ ] Correctly written and running TestClackServer
 - [ ] Correctly written and running TestClackClient
-- [ ] Javadoc comments, and Javadoc folder
+- [x] Javadoc comments, and Javadoc folder
 - [ ] Report with all questions answered
-- [ ] Contributions report
+- [x] Contributions report
 
 ### Report
 
