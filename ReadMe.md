@@ -12,10 +12,10 @@ By Humaira Rezaie and Christopher Mahoney.
 - [x] Correctly written ClackServer 
 - [x] Correctly written ClackClient
 - [x] Correctly written and running TestClackData
-- [ ] Correctly written and running TestClackServer
-- [ ] Correctly written and running TestClackClient
+- [x] Correctly written and running TestClackServer
+- [x] Correctly written and running TestClackClient
 - [x] Javadoc comments, and Javadoc folder
-- [ ] Report with all questions answered
+- [x] Report with all questions answered
 - [x] Contributions report
 
 ### Report
