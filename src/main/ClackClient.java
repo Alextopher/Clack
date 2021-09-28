@@ -34,6 +34,16 @@ public class ClackClient {
     public static final int DEFAULT_PORT = 7000;
 
     /**
+     *  Default hostname
+     */
+    public static final String DEFAULT_HOSTNAME = "localhost";
+
+    /**
+     *  Default userName
+     */
+    public static final String DEFAULT_USER_NAME = "Anon";
+
+    /**
      * Constructor that sets username, hostname and port. closeConnection defaults to true
      * @param userName String representing name of the client
      * @param hostName String representing name of the computer representing the server
@@ -52,7 +62,24 @@ public class ClackClient {
      * @param hostName String representing name of the computer representing the server
      */
     public ClackClient(String userName, String hostName) {
-        new ClackClient(userName, hostName, DEFAULT_PORT);
+        this(userName, hostName, DEFAULT_PORT);
+    }
+
+    /**
+     * Constructor that sets username. closeConnection defaults to true and port is set to the default.
+     * The hostname is set to "localhost"
+     * @param userName String representing name of the client
+     */
+    public ClackClient(String userName) {
+        this(userName, DEFAULT_HOSTNAME, DEFAULT_PORT);
+    }
+
+    /**
+     * Default Constructor. username is set to "anon" closeConnection defaults to true and port is set to the default.
+     * The hostname is set to "localhost"
+     */
+    public ClackClient() {
+        this(DEFAULT_USER_NAME, DEFAULT_HOSTNAME, DEFAULT_PORT);
     }
 
     /**

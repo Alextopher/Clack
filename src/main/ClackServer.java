@@ -24,22 +24,30 @@ public class ClackServer {
      */
     private ClackData dataToSendToClient;
 
+    /**
+     * default constructor that sets port to default port number 7000
+     */
+    public static final int DEFAULT_PORT = 7000;
 
     /**
-     * constructor that sets port number
-     *
-     * @param port set dataToReceiveFromClient and dataToSendToClient as null.
+     * Constructor that sets port number
+     * set dataToReceiveFromClient and dataToSendToClient as null.
+     * @param port port number
      */
     public ClackServer(int port) {
         this.port = port;
+        this.closeConnection = true;
         this.dataToReceiveFromClient = null;
         this.dataToSendToClient = null;
     }
 
     /**
-     * default constructor that sets port to default port number 7000
+     * Default constructor. Set the port to 7000
+     * set dataToReceiveFromClient and dataToSendToClient as null.
      */
-    public static final int DEFAULT_PORT = 7000;
+    public ClackServer() {
+        this(DEFAULT_PORT);
+    }
 
     /**
      * Starts the Server
