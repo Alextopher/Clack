@@ -89,6 +89,36 @@ public class ClackData {
         return date;
     }
 
+    protected static String encrypt(String inputStringToEncrypt, String key) {
+        char[] encrypted = new char[inputStringToEncrypt.length()];
+        final int keyLength = key.length();
+
+        for (int i = 0; i < inputStringToEncrypt.length(); i++) {
+            // for the english alphabet we use the formula `Ei = (Pi + Ki) mod 26`
+            // to support Java's larger "alphabet" (unicode) we use
+            // `Ei = (Pi + Ki) mod \uFFFF`
+            int e = inputStringToEncrypt.charAt(i) + key.charAt(i % keyLength);
+            encrypted[i] = (char) (e % Character.MAX_VALUE);
+        }
+
+        return new String(encrypted);
+    }
+
+    protected static String decrypt(String inputStringToDecrypt, String key) {
+        char[] decrypted = new char[inputStringToDecrypt.length()];
+        final int keyLength = key.length();
+
+        for (int i = 0; i < inputStringToDecrypt.length(); i++) {
+            // for the english alphabet we use the formula Di = (Ei - Ki + 26) mod 26
+            // to support Java's larger "alphabet" (unicode) we use
+            // `Di = (Ei - Ki + \uFFFF) mod \uFFFF`
+            int d = inputStringToDecrypt.charAt(i) - key.charAt(i % keyLength) + Character.MAX_VALUE;
+            decrypted[i] = (char) (d % Character.MAX_VALUE);
+        }
+
+        return new String(decrypted);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
