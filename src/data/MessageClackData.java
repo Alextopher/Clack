@@ -1,5 +1,7 @@
 package data;
 
+import java.util.Objects;
+
 /**
  * String representing instant message
  */
@@ -22,7 +24,7 @@ public class MessageClackData extends ClackData {
      * default constructor that call another constructor. userName is set to "Anon".
      */
     public MessageClackData() {
-        new MessageClackData("Anon", null, CONSTANT_UNKNOWN);
+        new MessageClackData("Anon", null, CONSTANT_LISTUSERS);
     }
 
     /**
@@ -33,26 +35,27 @@ public class MessageClackData extends ClackData {
         return message;
     }
 
+    /**
+     * Return instant message
+     * @return String instant message
+     */
     @Override
-    public int hashCode() {
-        int result = 17;
-        result = 37 * result + super.hashCode();
-        if (message != null) result = 37 * result + message.hashCode();
-        return result;
+    public String getData() {
+        return getMessage();
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj instanceof MessageClackData) {
-            MessageClackData other = (MessageClackData) obj;
-            // We don't compare file contents because it would be expensive and "filename" should be good enough
-            return super.equals(obj) && other.message.equals(this.message);
-        } else {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        MessageClackData that = (MessageClackData) o;
+        return Objects.equals(getMessage(), that.getMessage());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getMessage());
     }
 
     @Override

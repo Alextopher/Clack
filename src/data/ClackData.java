@@ -2,7 +2,7 @@ package data;
 
 import java.util.Date;
 
-public class ClackData {
+public abstract class ClackData {
     /**
      * String representing name of client user
      */
@@ -17,10 +17,6 @@ public class ClackData {
      */
     private Date date;
 
-    /**
-     * Type that represents unknown data type
-      */
-    public static final int CONSTANT_UNKNOWN = -1;
     /**
      * Type that represents a listing of all users connected to this session
       */
@@ -59,10 +55,11 @@ public class ClackData {
     }
 
     /**
-     * Default constructor. userName is set to "Anon". date is set to current time. type is set to CONSTANT_UNKNOWN
+     * Default constructor. userName is set to "Anon". date is set to current time.
+     * type is set to CONSTANT_LISTUSERS
      */
     public ClackData() {
-        this(CONSTANT_UNKNOWN);
+        this(CONSTANT_LISTUSERS);
     }
 
     /**
@@ -72,6 +69,8 @@ public class ClackData {
     public String getUserName() {
         return userName;
     }
+
+    abstract public String getData();
 
     /**
      * Returns the type of data
@@ -89,7 +88,7 @@ public class ClackData {
         return date;
     }
 
-    protected static String encrypt(String inputStringToEncrypt, String key) {
+    protected String encrypt(String inputStringToEncrypt, String key) {
         char[] encrypted = new char[inputStringToEncrypt.length()];
         final int keyLength = key.length();
 
@@ -104,7 +103,7 @@ public class ClackData {
         return new String(encrypted);
     }
 
-    protected static String decrypt(String inputStringToDecrypt, String key) {
+    protected String decrypt(String inputStringToDecrypt, String key) {
         char[] decrypted = new char[inputStringToDecrypt.length()];
         final int keyLength = key.length();
 

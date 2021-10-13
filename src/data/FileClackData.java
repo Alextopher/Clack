@@ -1,5 +1,7 @@
 package data;
 
+import java.util.Objects;
+
 public class FileClackData extends ClackData {
     /**
      * String representing name of file.
@@ -45,6 +47,15 @@ public class FileClackData extends ClackData {
         this.fileName = fileName;
     }
 
+    /**
+     * Return file contents (currently null)
+     * @return String file contents
+     */
+    @Override
+    public String getData() {
+        return null;
+    }
+
     // TODO learn how to do IO
     public void readFileContents() {
 
@@ -56,28 +67,17 @@ public class FileClackData extends ClackData {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj instanceof FileClackData) {
-            FileClackData other = (FileClackData) obj;
-
-            // We don't compare file contents because it would be expensive and "filename" should be good enough
-            return super.equals(obj) && other.fileName.equals(this.fileName);
-        } else {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        FileClackData that = (FileClackData) o;
+        return Objects.equals(getFileName(), that.getFileName()) && Objects.equals(fileContents, that.fileContents);
     }
 
     @Override
     public int hashCode() {
-        int result = 17;
-        result = 37 * result + super.hashCode();
-        if (fileName != null) result = 37 * result + fileName.hashCode();
-        // We don't compare file contents because it would be expensive and "filename" should be good enough
-        // if this is a wrong assumptions please let us know!
-        return result;
+        return Objects.hash(super.hashCode(), getFileName(), fileContents);
     }
 
     @Override

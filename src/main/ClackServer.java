@@ -2,6 +2,8 @@ package main;
 
 import data.ClackData;
 
+import java.util.Objects;
+
 public class ClackServer {
 
     /**
@@ -80,23 +82,19 @@ public class ClackServer {
     }
 
     @Override
-    public int hashCode() {
-        int result = 17;
-        result = 37 * result + port;
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClackServer that = (ClackServer) o;
+        return getPort() == that.getPort()
+                && closeConnection == that.closeConnection
+                && Objects.equals(dataToReceiveFromClient, that.dataToReceiveFromClient)
+                && Objects.equals(dataToSendToClient, that.dataToSendToClient);
     }
 
     @Override
-    public boolean equals(Object ob) {
-        if (this == ob) {
-            return true;
-        }
-        if (ob instanceof ClackServer) {
-            ClackServer other = (ClackServer) ob;
-            return other.port == this.port;
-        } else {
-            return false;
-        }
+    public int hashCode() {
+        return Objects.hash(getPort(), closeConnection, dataToReceiveFromClient, dataToSendToClient);
     }
 
     @Override

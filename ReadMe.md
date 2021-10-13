@@ -3,6 +3,19 @@ Clack _(Clarkson Slack)_ project for CS-242.
 
 By Humaira Rezaie and Christopher Mahoney.
 
+## Part 2
+###TODO list:
+- [x] Encryption and decryption methods
+- [ ] Implementation of new constructor in MessageClackData
+- [ ] Implementation of overloaded method getData in two MessageClackData and FileClackData classes
+- [ ] Implementation of overloaded methods readFileContents and writeFileContents in FileClackData
+- [ ] New functionality in ClackClient
+- [ ] Correctly written and running TestClackData
+- [ ] Correctly written and running TestClackClient
+- [ ] Report with output from TestClackClient
+- [ ] Javadoc comments, and Javadoc folder
+- [ ] Contributions reports
+
 ## Part 1
 ###TODO list:
 - [x] Git practice
@@ -16,7 +29,7 @@ By Humaira Rezaie and Christopher Mahoney.
 - [x] Correctly written and running TestClackClient
 - [x] Javadoc comments, and Javadoc folder
 - [x] Report with all questions answered
-- [x] Contributions report
+- [x] Contributions reports
 
 ### Report
 

@@ -2,6 +2,8 @@ package main;
 
 import data.ClackData;
 
+import java.util.Objects;
+
 public class ClackClient {
     /**
      * String representing name of the client
@@ -142,34 +144,21 @@ public class ClackClient {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj instanceof ClackClient) {
-            ClackClient other = (ClackClient) obj;
-            // Not sure if we should compare dataToSendToServer and dataToReceiveFromServer
-            // Seems like it shouldn't be of any benefit because 2 clients can't connect on the same port
-            return other.hostName.equals(this.hostName)
-                    && other.userName.equals(this.userName)
-                    && other.port == this.port
-                    && other.closeConnection == this.closeConnection;
-        } else {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClackClient that = (ClackClient) o;
+        return getPort() == that.getPort()
+                && closeConnection == that.closeConnection
+                && Objects.equals(getUserName(), that.getUserName())
+                && Objects.equals(getHostName(), that.getHostName())
+                && Objects.equals(dataToSendToServer, that.dataToSendToServer)
+                && Objects.equals(dataToReceiveFromServer, that.dataToReceiveFromServer);
     }
 
     @Override
     public int hashCode() {
-        int result = 17;
-        result = 37 * result + super.hashCode();
-        if (hostName != null) result = 37 * result + hostName.hashCode();
-        if (userName != null) result = 37 * result + userName.hashCode();
-        result = 37 * result + Boolean.hashCode(closeConnection);
-        result = 37 * result + port;
-        // Not sure if we should compare dataToSendToServer and dataToReceiveFromServer
-        // Seems like it shouldn't be of any benefit because 2 clients can't connect on the same port
-        return result;
+        return Objects.hash(getUserName(), getHostName(), getPort(), closeConnection, dataToSendToServer, dataToReceiveFromServer);
     }
 
     @Override
