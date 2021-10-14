@@ -56,6 +56,11 @@ public class FileClackData extends ClackData {
         return null;
     }
 
+    @Override
+    public String getData(String key) {
+        return null;
+    }
+
     // TODO learn how to do IO
     public void readFileContents() {
 

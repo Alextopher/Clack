@@ -62,6 +62,9 @@ public abstract class ClackData {
         this(CONSTANT_LISTUSERS);
     }
 
+    abstract public String getData();
+    abstract public String getData(String key);
+
     /**
      * Returns the userName of the client
      * @return username
@@ -69,8 +72,6 @@ public abstract class ClackData {
     public String getUserName() {
         return userName;
     }
-
-    abstract public String getData();
 
     /**
      * Returns the type of data
@@ -150,5 +151,4 @@ public abstract class ClackData {
                 ", date=" + date +
                 '}';
     }
-    abstract public String getData(String key);
 }

@@ -46,6 +46,11 @@ public class MessageClackData extends ClackData {
     }
 
     @Override
+    public String getData(String key) {
+        return null;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -79,5 +84,6 @@ public class MessageClackData extends ClackData {
     public MessageClackData(String userName, String Message, String key , int type){
         this.message = key;
     }
+
 
 }
