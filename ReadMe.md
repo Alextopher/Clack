@@ -6,14 +6,14 @@ By Humaira Rezaie and Christopher Mahoney.
 ## Part 2
 ###TODO list:
 - [x] Encryption and decryption methods
-- [ ] Implementation of new constructor in MessageClackData
-- [ ] Implementation of overloaded method getData in two MessageClackData and FileClackData classes
-- [ ] Implementation of overloaded methods readFileContents and writeFileContents in FileClackData
+- [x] Implementation of new constructor in MessageClackData
+- [x] Implementation of overloaded method getData in two MessageClackData and FileClackData classes
+- [x] Implementation of overloaded methods readFileContents and writeFileContents in FileClackData
 - [ ] New functionality in ClackClient
 - [ ] Correctly written and running TestClackData
 - [ ] Correctly written and running TestClackClient
 - [ ] Report with output from TestClackClient
-- [ ] Javadoc comments, and Javadoc folder
+- [x] Javadoc comments, and Javadoc folder
 - [ ] Contributions reports
 
 ## Part 1

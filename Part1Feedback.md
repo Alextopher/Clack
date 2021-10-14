@@ -22,7 +22,7 @@ It is only going to cause confusion.
 >
 > **FIXED** (-0.05) In ClackServer, equals() should take closeConnection, dataToSendToClient, and dataToReceiveFromClient into account.
 
-Part of my issue is just that implementing `Equals` this way on these classes does not make sense. 
+Part of the reason this happened is implementing `Equals` on these classes does not make sense to me. 
 If I need to know if 2 servers are the same object I probably just want to know they have the same pointer.
 I can't imagine a scenario where I would have two different servers with the same port, connection status, client name, etc.
 This feels vacuously true, this requirement only works because we make a bad assumption.
