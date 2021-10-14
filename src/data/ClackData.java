@@ -89,7 +89,7 @@ public abstract class ClackData {
         return date;
     }
 
-    protected String encrypt(String inputStringToEncrypt, String key) {
+    static protected String encrypt(String inputStringToEncrypt, String key) {
         char[] encrypted = new char[inputStringToEncrypt.length()];
         final int keyLength = key.length();
 
@@ -104,7 +104,7 @@ public abstract class ClackData {
         return new String(encrypted);
     }
 
-    protected String decrypt(String inputStringToDecrypt, String key) {
+    static protected String decrypt(String inputStringToDecrypt, String key) {
         char[] decrypted = new char[inputStringToDecrypt.length()];
         final int keyLength = key.length();
 
