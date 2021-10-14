@@ -1,5 +1,6 @@
 package data;
 
+import java.io.*;
 import java.util.Objects;
 
 public class FileClackData extends ClackData {
@@ -57,7 +58,7 @@ public class FileClackData extends ClackData {
     }
 
     /**
-     * decrypt and return file contents
+     * Decrypt and return file contents
      * @param key decryption key
      * @return plaintext file contents
      */
@@ -66,14 +67,58 @@ public class FileClackData extends ClackData {
         return decrypt(fileContents, key);
     }
 
-    // TODO learn how to do IO
-    public void readFileContents() {
-
+    /**
+     * Reads contents of fileName and saves them to fileContents
+     * @throws IOException file not found or there was an error while reading file
+     */
+    public void readFileContents() throws IOException {
+        fileContents = readFile();
     }
 
-    // TODO learn how to do IO
-    public void writeFileContents() {
+    /**
+     * Reads the contents of fileName, encrypts it, and saves it to fileContents
+     * @param key encryption key
+     * @throws IOException file not found or there was an error while reading file
+     */
+    public void readFileContents(String key) throws IOException {
+        fileContents = encrypt(readFile(), key);
+    }
 
+    /**
+     * Writes fileContents to fileName
+     * @throws IOException file writing failed
+     */
+    public void writeFileContents() throws IOException {
+        FileWriter file = new FileWriter(fileName);
+        file.write(fileContents);
+    }
+
+    /**
+     * Decrypts fileContents and writes to fileName
+     * @throws IOException file writing failed
+     */
+    public void writeFileContents(String key) throws IOException {
+        FileWriter file = new FileWriter(fileName);
+        file.write(decrypt(fileContents, key));
+    }
+
+    /**
+     * Reads a file from disk as a String
+     * @return String file contents
+     * @throws IOException file reading failed
+     */
+    private String readFile() throws IOException {
+        FileReader file = new FileReader(fileName);
+        BufferedReader reader = new BufferedReader(file);
+        StringBuilder content = new StringBuilder();
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            content.append(line);
+        }
+        reader.close();
+
+        return content.toString();
     }
 
     @Override
