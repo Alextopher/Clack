@@ -18,6 +18,7 @@ public class MessageClackData extends ClackData {
     public MessageClackData(String userName, String message, int type) {
         super(userName, type);
         this.message = message;
+
     }
 
     /**
@@ -67,4 +68,16 @@ public class MessageClackData extends ClackData {
                 ", message='" + message + '\'' +
                 '}';
     }
+
+    /**
+     * This constructor encrypts message using the key.
+     * @param userName
+     * @param Message
+     * @param key
+     * @param type
+     */
+    public MessageClackData(String userName, String Message, String key , int type){
+        this.message = key;
+    }
+
 }
