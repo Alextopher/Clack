@@ -56,9 +56,14 @@ public class FileClackData extends ClackData {
         return null;
     }
 
+    /**
+     * decrypt and return file contents
+     * @param key decryption key
+     * @return plaintext file contents
+     */
     @Override
     public String getData(String key) {
-        return null;
+        return decrypt(fileContents, key);
     }
 
     // TODO learn how to do IO
