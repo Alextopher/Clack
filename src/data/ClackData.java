@@ -150,4 +150,5 @@ public abstract class ClackData {
                 ", date=" + date +
                 '}';
     }
+    abstract public String getData(String key);
 }
