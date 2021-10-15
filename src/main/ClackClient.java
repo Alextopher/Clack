@@ -7,7 +7,11 @@ import data.MessageClackData;
 import java.io.IOException;
 import java.util.*;
 
+
 public class ClackClient {
+
+    public static final String KEY = "XYPQR";
+
     /**
      * String representing name of the client
      */
@@ -34,6 +38,7 @@ public class ClackClient {
     private ClackData dataToReceiveFromServer;
 
     private java.util.Scanner inFromStd;
+
 
     /**
      * Default port Clark runs on
