@@ -5,6 +5,7 @@ import data.FileClackData;
 import data.MessageClackData;
 
 import java.io.IOException;
+import java.security.Key;
 import java.util.*;
 
 
@@ -36,6 +37,7 @@ public class ClackClient {
      * ClackData object representing data received from the server
      */
     private ClackData dataToReceiveFromServer;
+
 
     private java.util.Scanner inFromStd;
 
@@ -130,7 +132,7 @@ public class ClackClient {
         else if (inp.matches("SENDFILE")) {
             FileClackData fileClackData = new FileClackData(this.userName, ClackData.CONSTANT_SENDFILE, inFromStd.next());
             try {
-                fileClackData.readFileContents();
+                fileClackData.readFileContents(KEY);
                 dataToSendToServer = fileClackData;
             } catch (IOException e) {
                 System.out.println("Could not read file " + fileClackData.getFileName());
@@ -141,7 +143,7 @@ public class ClackClient {
 
         }
         else {
-            dataToSendToServer = new MessageClackData(this.userName,inp + inFromStd.nextLine(),
+            dataToSendToServer = new MessageClackData(this.userName,inp + inFromStd.nextLine(), KEY,
                     MessageClackData.CONSTANT_SENDMESSAGE);
         }
     }
@@ -166,7 +168,7 @@ public class ClackClient {
     public void printData() {
         System.out.println(dataToReceiveFromServer.getDate() + " | "
                         + dataToReceiveFromServer.getUserName() + " :\n"
-                        + dataToReceiveFromServer.getData()
+                        + dataToReceiveFromServer.getData(KEY)
                 );
     }
 
