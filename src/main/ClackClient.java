@@ -51,7 +51,16 @@ public class ClackClient {
      * @param hostName String representing name of the computer representing the server
      * @param port Integer representing port number on server connected to
      */
-    public ClackClient(String userName, String hostName, int port) {
+    public ClackClient(String userName, String hostName, int port) throws IllegalArgumentException {
+        if (userName == null) {
+            throw new IllegalArgumentException("userName cannot be null");
+        }
+        if (hostName == null) {
+            throw new IllegalArgumentException("hostName cannot be null");
+        }
+        if (port < 1024 || port > 65535) {
+            throw new IllegalArgumentException("port must be between 1024 and 65535");
+        }
         this.userName = userName;
         this.hostName = hostName;
         this.port = port;
@@ -63,7 +72,7 @@ public class ClackClient {
      * @param userName String representing name of the client
      * @param hostName String representing name of the computer representing the server
      */
-    public ClackClient(String userName, String hostName) {
+    public ClackClient(String userName, String hostName) throws IllegalArgumentException {
         this(userName, hostName, DEFAULT_PORT);
     }
 
@@ -72,7 +81,7 @@ public class ClackClient {
      * The hostname is set to "localhost"
      * @param userName String representing name of the client
      */
-    public ClackClient(String userName) {
+    public ClackClient(String userName) throws IllegalArgumentException {
         this(userName, DEFAULT_HOSTNAME, DEFAULT_PORT);
     }
 
