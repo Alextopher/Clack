@@ -36,5 +36,7 @@ public class TestClarkClient {
         System.out.println("port " + client4.getPort());
         System.out.println("hash " + client4.hashCode());
         System.out.println();
+
+        client1.start();
     }
 }
