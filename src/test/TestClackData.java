@@ -2,6 +2,7 @@ package test;
 
 import data.ClackData;
 import data.FileClackData;
+import data.MessageClackData;
 
 import java.io.IOException;
 
@@ -10,10 +11,12 @@ public class TestClackData {
     public static final int TEST_TYPE = ClackData.CONSTANT_LISTUSERS;
     public static final String TEST_FILE_NAME_BAD = "bad_file.txt";
     public static final String TEST_FILE_NAME_GOOD = "/Users/mahonec/IdeaProjects/Clack/src/test/Part2_document.txt";
+    public static final String TEST_KEY = "TESTTSET";
     public static final String TEST_FILE_OUT_1 = "/tmp/clack_test1.txt";
     public static final String TEST_FILE_OUT_2 = "/tmp/clack_test2.txt";
     public static final String TEST_FILE_OUT_3 = "/tmp/clack_test3.txt";
     public static final String TEST_FILE_OUT_4 = "/tmp/clack_test4.txt";
+    public static final String TEST_MESSAGE_1 = "HELLO WORLD";
 
     public static void main(String[] args) throws IOException {
         // File Clack Data (no encryption)
@@ -34,22 +37,21 @@ public class TestClackData {
         fileData2.writeFileContents();
 
         // File Clack Data (encryption)
-        String key = "TEST";
         System.out.println("FileClackData - yes key - constructor with 3 args");
         FileClackData fileData3 = new FileClackData(TEST_USER_NAME, TEST_TYPE, TEST_FILE_NAME_BAD);
         printFileClackData(fileData3);
-        testReadFilesWithKey(key, fileData3);
+        testReadFilesWithKey(TEST_KEY, fileData3);
         fileData3.setFileName(TEST_FILE_OUT_3);
-        fileData3.writeFileContents(key);
+        fileData3.writeFileContents(TEST_KEY);
 
         // Default
         System.out.println("FileClackData - yes key - default");
         FileClackData fileData4 = new FileClackData();
         printFileClackData(fileData4);
         fileData4.setFileName(TEST_FILE_NAME_BAD);
-        testReadFilesWithKey(key, fileData4);
+        testReadFilesWithKey(TEST_KEY, fileData4);
         fileData4.setFileName(TEST_FILE_OUT_4);
-        fileData4.writeFileContents(key);
+        fileData4.writeFileContents(TEST_KEY);
 
         // The result of all the test writes should be the same file
         System.out.println("Checking all outputs are correct");
@@ -72,6 +74,34 @@ public class TestClackData {
             System.out.println("ERROR: Something wrong with encryption or writing");
             System.exit(1);
         }
+
+        // Test MessageClackData
+        System.out.println("MessageClackData - No Key");
+        MessageClackData messageData1 = new MessageClackData(TEST_USER_NAME, TEST_MESSAGE_1, TEST_TYPE);
+        printMessageClackData(messageData1);
+        System.out.println("MessageClackData - No Key - Default");
+        MessageClackData messageData2 = new MessageClackData();
+        printMessageClackData(messageData2);
+        System.out.println("MessageClackData - Yes Key");
+        MessageClackData messageData3 = new MessageClackData(TEST_USER_NAME, TEST_MESSAGE_1, TEST_KEY, TEST_TYPE);
+        printMessageClackData(messageData3);
+
+        System.out.println();
+        if (messageData1.getData().equals(messageData3.getData(TEST_KEY))) {
+            System.out.println("MessageClackData encryption adds up");
+        } else {
+            System.out.println("MessageClackData encryption failed");
+            System.exit(1);
+        }
+    }
+
+    private static void printMessageClackData(MessageClackData messageData) {
+        System.out.println(messageData);
+        System.out.println("getUserName " + messageData.getUserName());
+        System.out.println("getType " + messageData.getType());
+        System.out.println("getDate " + messageData.getDate());
+        System.out.println("getData " + messageData.getData());
+        System.out.println("hash " + messageData.hashCode());
     }
 
     private static void testReadFilesWithKey(String key, FileClackData fileData) throws IOException {
