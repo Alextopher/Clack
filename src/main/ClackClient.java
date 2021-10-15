@@ -104,14 +104,16 @@ public class ClackClient {
      */
     public void start() {
         inFromStd = new Scanner(System.in);
-        while (closeConnection == False ) {
+        closeConnection = false;
+        while (!closeConnection) {
             readClientData();
+            dataToReceiveFromServer = dataToSendToServer;
+            if (dataToReceiveFromServer != null) {
+                printData();
+            }
+
         }
-        dataToReceiveFromServer = dataToSendToServer;
-        printData();
-
     }
-
     /**
      * Reads the data from the client
      */
