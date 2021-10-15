@@ -128,6 +128,7 @@ public class ClackClient {
         inp = inFromStd.next();
         if (inp.matches("DONE")){
             closeConnection = true;
+            dataToSendToServer = null;
         }
         else if (inp.matches("SENDFILE")) {
             FileClackData fileClackData = new FileClackData(this.userName, ClackData.CONSTANT_SENDFILE, inFromStd.next());

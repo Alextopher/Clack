@@ -12,14 +12,29 @@ By Humaira Rezaie and Christopher Mahoney.
 - [x] New functionality in ClackClient
 - [x] Correctly written and running TestClackData
 - [x] Correctly written and running TestClackClient
-- [ ] Report with output from TestClackClient
+- [x] Report with output from TestClackClient
 - [x] Javadoc comments, and Javadoc folder
 - [ ] Contributions reports
 
 
 ### Report
+For encryption, we used a slightly more complicated scheme. Instead of only being able to encode and decode english 
+letters we can support all 2^16 - 1 `char`s. The underlying algorithm is basically the same.
 
+In TestClarkData we created some files in `/tmp`. Depending on your system this may not work for you.
 
+```
+$ LISTUSERS
+$ SENDFILE /Users/mahonec/IdeaProjects/Clack/src/test/Part2_document.txt
+Fri Oct 15 00:07:16 EDT 2021 | user :
+A digital computer can usually be regarded as consisting of three parts: (i) Store. (ii) Executive unit. (iii) Control. ...The executive unit is the part which carries out the various individual operations involved in a calculation. ...It is the duty of the control to see that...[the table of] instructions are obeyed correctly and in the right order. ...A typical instruction might say—"Add the number stored in position 6809 to that in 4302 and put the result back into the latter storage position." Needless to say it would not occur in the machine expressed in English. It would more likely be coded in a form such as 6809430217. Here 17 says which of various possible operations [add] is to be performed on the two numbers. ...It will be noticed that the instruction takes up 10 digits and so forms one packet of information...
+$ Hello world ! :)
+Fri Oct 15 00:07:34 EDT 2021 | user :
+Hello world ! :)
+$ DONE
+```
+
+In ClarkData.java we got permission from Natasha to use `static` for `encrypt` and `decrypt`.
 
 ## Part 1
 ###TODO list:

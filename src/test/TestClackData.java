@@ -10,7 +10,7 @@ public class TestClackData {
     public static final String TEST_USER_NAME = "test";
     public static final int TEST_TYPE = ClackData.CONSTANT_LISTUSERS;
     public static final String TEST_FILE_NAME_BAD = "bad_file.txt";
-    public static final String TEST_FILE_NAME_GOOD = "/Users/mahonec/IdeaProjects/Clack/src/test/Part2_document.txt";
+    public static final String TEST_FILE_NAME_GOOD = "src/test/Part2_document.txt";
     public static final String TEST_KEY = "TESTTSET";
     public static final String TEST_FILE_OUT_1 = "/tmp/clack_test1.txt";
     public static final String TEST_FILE_OUT_2 = "/tmp/clack_test2.txt";
