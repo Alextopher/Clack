@@ -54,7 +54,7 @@ public class FileClackData extends ClackData {
      */
     @Override
     public String getData() {
-        return null;
+        return fileContents;
     }
 
     /**
@@ -91,6 +91,7 @@ public class FileClackData extends ClackData {
     public void writeFileContents() throws IOException {
         FileWriter file = new FileWriter(fileName);
         file.write(fileContents);
+        file.close();
     }
 
     /**
@@ -100,6 +101,7 @@ public class FileClackData extends ClackData {
     public void writeFileContents(String key) throws IOException {
         FileWriter file = new FileWriter(fileName);
         file.write(decrypt(fileContents, key));
+        file.close();
     }
 
     /**
