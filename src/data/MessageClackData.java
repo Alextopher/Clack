@@ -12,9 +12,11 @@ public class MessageClackData extends ClackData {
      */
     private String message;
 
-
     /**
      * Constructor to set up username, message, and type
+     * @param userName username
+     * @param message message
+     * @param type type
      */
     public MessageClackData(String userName, String message, int type) {
         super(userName, type);
@@ -24,8 +26,10 @@ public class MessageClackData extends ClackData {
     /**
      * Constructor to set up username, message, and type
      * message is encrypted with key
+     * @param userName username
      * @param message plain text
      * @param key encryption key
+     * @param type type
      */
     public MessageClackData(String userName, String message, String key, int type ){
         this(userName, encrypt(message, key), type);

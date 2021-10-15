@@ -96,6 +96,7 @@ public class FileClackData extends ClackData {
 
     /**
      * Decrypts fileContents and writes to fileName
+     * @param key Encryption key
      * @throws IOException file writing failed
      */
     public void writeFileContents(String key) throws IOException {
