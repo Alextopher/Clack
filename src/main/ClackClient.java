@@ -1,6 +1,10 @@
 package main;
 
 import data.ClackData;
+import data.FileClackData;
+import data.MessageClackData;
+
+import java.util.*;
 
 import java.util.Objects;
 
@@ -29,6 +33,8 @@ public class ClackClient {
      * ClackData object representing data received from the server
      */
     private ClackData dataToReceiveFromServer;
+
+    private java.util.Scanner inFromStd;
 
     /**
      * Default port Clark runs on
@@ -89,12 +95,41 @@ public class ClackClient {
      */
     public void start() {
 
+
     }
 
     /**
      * Reads the data from the client
      */
     public void readClientData() {
+        String inp;
+        try {
+            Scanner inFromStd = new Scanner(System.in);
+            inp = inFromStd.next();
+            if (inp.matches("DONE")){
+                closeConnection = true;
+            }
+            else if (inp.matches("SENDFILE")) {
+
+                dataToSendToServer = new FileClackData(this.userName, ClackData.CONSTANT_SENDFILE, inFromStd.next());
+                dataToSendToServer.readFileContents();
+
+
+            }
+            else if (inp.matches("LISTUSERS")){
+
+            }
+            else {
+                dataToSendToServer = new MessageClackData(this.userName, "The word you entered did not match" +
+                        "the key words", MessageClackData.CONSTANT_SENDMESSAGE);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Could not read file " + dataToSendToServer.getFileName());
+            dataToSendToServer = null;
+        }
 
     }
 
@@ -116,7 +151,9 @@ public class ClackClient {
      * prints the received data to standard output
      */
     public void printData() {
-
+        System.out.println(dataToReceiveFromServer.getData());
+        System.out.println(dataToReceiveFromServer.getUserName());
+        System.out.println(dataToReceiveFromServer.getDate());
     }
 
     /**
