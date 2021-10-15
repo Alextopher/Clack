@@ -103,7 +103,12 @@ public class ClackClient {
      * Starts the client
      */
     public void start() {
-
+        inFromStd = new Scanner(System.in);
+        while (closeConnection == False ) {
+            readClientData();
+        }
+        dataToReceiveFromServer = dataToSendToServer;
+        printData();
 
     }
 
@@ -120,8 +125,10 @@ public class ClackClient {
             }
             else if (inp.matches("SENDFILE")) {
 
-                dataToSendToServer = new FileClackData(this.userName, ClackData.CONSTANT_SENDFILE, inFromStd.next());
-                dataToSendToServer.readFileContents();
+                FileClackData fileClackData = new FileClackData(this.userName, ClackData.CONSTANT_SENDFILE,
+                        inFromStd.next());
+                fileClackData.readFileContents();
+                dataToSendToServer = fileClackData;
 
 
             }
@@ -136,7 +143,7 @@ public class ClackClient {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Could not read file " + dataToSendToServer.getFileName());
+            System.out.println("Could not read file " + fileClackData.getFileName());
             dataToSendToServer = null;
         }
 
@@ -160,9 +167,8 @@ public class ClackClient {
      * prints the received data to standard output
      */
     public void printData() {
-        System.out.println(dataToReceiveFromServer.getData());
-        System.out.println(dataToReceiveFromServer.getUserName());
-        System.out.println(dataToReceiveFromServer.getDate());
+        System.out.println(dataToReceiveFromServer.getData() + dataToReceiveFromServer.getUserName()+
+                dataToReceiveFromServer.getDate());
     }
 
     /**
