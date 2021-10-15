@@ -7,8 +7,6 @@ import data.MessageClackData;
 import java.io.IOException;
 import java.util.*;
 
-import java.util.Objects;
-
 public class ClackClient {
     /**
      * String representing name of the client
