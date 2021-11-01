@@ -4,7 +4,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 
-public abstract class ClackData implements Comparable < ClackData > , Serializable {
+public abstract class ClackData implements Serializable {
     /**
      * String representing name of client user
      */

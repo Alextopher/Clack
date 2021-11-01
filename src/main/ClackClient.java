@@ -43,16 +43,19 @@ public class ClackClient {
     private ClackData dataToReceiveFromServer;
 
     /**
-     * ObjectInputStream and ObjectOutputStream have been declared as instance variables.
+     * Stream to recieve information from server
      */
-    FileInputStream iFS = new FileInputStream("null");
-    ObjectInputStream inFromServer = new ObjectInputStream(iFS);
-    FileOutputStream oTS = new FileOutputStream("null");
-    ObjectOutputStream outToServer = new ObjectOutputStream(oTS);
+    private ObjectInputStream inFromServer;
 
+    /**
+     * Stream to send information to server
+     */
+    private ObjectOutputStream outToServer;
 
+    /**
+     * Scanner representing standard input
+     */
     private java.util.Scanner inFromStd;
-
 
     /**
      * Default port Clark runs on
@@ -75,7 +78,7 @@ public class ClackClient {
      * @param hostName String representing name of the computer representing the server
      * @param port Integer representing port number on server connected to
      */
-    public ClackClient(String userName, String hostName, int port) throws IllegalArgumentException, IOException {
+    public ClackClient(String userName, String hostName, int port) throws IllegalArgumentException {
         if (userName == null) {
             throw new IllegalArgumentException("userName cannot be null");
         }
@@ -85,10 +88,13 @@ public class ClackClient {
         if (port < 1024 || port > 65535) {
             throw new IllegalArgumentException("port must be between 1024 and 65535");
         }
+
         this.userName = userName;
         this.hostName = hostName;
         this.port = port;
         this.closeConnection = true;
+        this.inFromServer = null;
+        this.outToServer = null;
     }
 
     /**
@@ -96,7 +102,7 @@ public class ClackClient {
      * @param userName String representing name of the client
      * @param hostName String representing name of the computer representing the server
      */
-    public ClackClient(String userName, String hostName) throws IllegalArgumentException, IOException {
+    public ClackClient(String userName, String hostName) throws IllegalArgumentException {
         this(userName, hostName, DEFAULT_PORT);
     }
 
@@ -105,7 +111,7 @@ public class ClackClient {
      * The hostname is set to "localhost"
      * @param userName String representing name of the client
      */
-    public ClackClient(String userName) throws IllegalArgumentException, IOException {
+    public ClackClient(String userName) throws IllegalArgumentException {
         this(userName, DEFAULT_HOSTNAME, DEFAULT_PORT);
     }
 
@@ -113,7 +119,7 @@ public class ClackClient {
      * Default Constructor. username is set to "anon" closeConnection defaults to true and port is set to the default.
      * The hostname is set to "localhost"
      */
-    public ClackClient() throws IOException {
+    public ClackClient() {
         this(DEFAULT_USER_NAME, DEFAULT_HOSTNAME, DEFAULT_PORT);
     }
 
@@ -122,25 +128,21 @@ public class ClackClient {
      */
     public void start() {
         try {
-            ServerSocket SS = new ServerSocket(DEFAULT_PORT);
-            System.out.println("Server is up, waiting for request");
-            Socket clientSocket = SS.accept();
-        }
-        catch (IOException ioe){
+            Socket clientSocket = new Socket(hostName, port);
+            // initialize inFromServer and outToServer
+            inFromServer = new ObjectInputStream(clientSocket.getInputStream());
+            outToServer = new ObjectOutputStream(clientSocket.getOutputStream());
+        } catch (IOException ioe){
             System.err.println(ioe.getMessage());
         }
-        BufferedReader inFromServer = new BufferedReader(
-                new InputStreamReader(clientSocket.getInputStream()));
-        PrintWriter outToServer = new PrintWriter(clientSocket.getOutputStream());
 
         inFromStd = new Scanner(System.in);
         closeConnection = false;
         while (!closeConnection) {
             readClientData();
-            dataToReceiveFromServer = dataToSendToServer;
-            if (dataToReceiveFromServer != null) {
-                printData();
-            }
+            sendData();
+            readClientData();
+            printData();
         }
     }
 
@@ -178,14 +180,16 @@ public class ClackClient {
      * outToServer has been initialized as null.
      */
     public void sendData() {
-        outToServer = null;
-        try{
-            dataToSendToServer = outToServer;
-        }
-        catch(IOException ioe){
-            System.err.println(ioe.getMessage());
+        if (dataToSendToServer == null) {
+            return;
         }
 
+        // send data to server
+        try {
+            outToServer.writeObject(dataToSendToServer);
+        } catch (IOException e) {
+            System.err.println("could not send to server" + e.getMessage());
+        }
     }
 
     /**
@@ -193,15 +197,18 @@ public class ClackClient {
      * inFromServer has been initialized as null.
      */
     public void receiveData() {
-        inFromServer = null;
-
-        try{
-            dataToSendToServer = new inFromServer();
+        // receive data from server
+        try {
+            dataToReceiveFromServer = (ClackData) inFromServer.readObject();
+        } catch (IOException e) {
+            System.err.println("could not receive from server" + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.err.println("server sent us junk" + e.getMessage());
         }
-        catch(IOException ioe){
-            System.err.println(ioe.getMessage());
-        }
 
+        if (dataToReceiveFromServer != null) {
+            printData();
+        }
     }
 
     /**
