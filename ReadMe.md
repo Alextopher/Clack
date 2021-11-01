@@ -3,6 +3,27 @@ Clack _(Clarkson Slack)_ project for CS-242.
 
 By Humaira Rezaie and Christopher Mahoney.
 
+## Part 3
+### TODO list:
+- [ ] Make ClackData Serializable
+- [ ] ClackClient for Single Client Communication with Server
+- [ ] ObjectInputStream and ObjectOutputStream instance variables in ClackClient
+- [ ] The start() method in ClackClient
+- [ ] The sendData() method in ClackClient
+- [ ] The receiveData() method in ClackClient
+- [ ] ClackServer class for Single Client Communication with Server
+- [ ] ObjectInputStream and ObjectOutputStream, and ClackData instance variables in
+  ClackServer
+- [ ] The start() method in ClackServe
+- [ ] The receiveData() method in ClackServer
+- [ ] The sendData() method in ClackServer
+- [ ] IllegalArgumentException in ClackServer constructor
+- [ ] Main method in ClackClient
+- [ ] Main method in ClackServer
+- [ ] Create JAR files
+- [ ] Running the ClackClient and ClackServer programs
+- [ ] Contributions reports
+
 ## Part 2
 ###TODO list:
 - [x] Encryption and decryption methods
