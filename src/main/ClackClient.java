@@ -4,9 +4,13 @@ import data.ClackData;
 import data.FileClackData;
 import data.MessageClackData;
 
-import java.io.IOException;
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.security.Key;
 import java.util.*;
+import java.net.*;
+import java.io.BufferedReader;
 
 
 public class ClackClient {
@@ -38,6 +42,14 @@ public class ClackClient {
      */
     private ClackData dataToReceiveFromServer;
 
+    /**
+     * ObjectInputStream and ObjectOutputStream have been declared as instance variables.
+     */
+    FileInputStream iFS = new FileInputStream("null");
+    ObjectInputStream inFromServer = new ObjectInputStream(iFS);
+    FileOutputStream oTS = new FileOutputStream("null");
+    ObjectOutputStream outToServer = new ObjectOutputStream(oTS);
+
 
     private java.util.Scanner inFromStd;
 
@@ -63,7 +75,7 @@ public class ClackClient {
      * @param hostName String representing name of the computer representing the server
      * @param port Integer representing port number on server connected to
      */
-    public ClackClient(String userName, String hostName, int port) throws IllegalArgumentException {
+    public ClackClient(String userName, String hostName, int port) throws IllegalArgumentException, IOException {
         if (userName == null) {
             throw new IllegalArgumentException("userName cannot be null");
         }
@@ -84,7 +96,7 @@ public class ClackClient {
      * @param userName String representing name of the client
      * @param hostName String representing name of the computer representing the server
      */
-    public ClackClient(String userName, String hostName) throws IllegalArgumentException {
+    public ClackClient(String userName, String hostName) throws IllegalArgumentException, IOException {
         this(userName, hostName, DEFAULT_PORT);
     }
 
@@ -93,7 +105,7 @@ public class ClackClient {
      * The hostname is set to "localhost"
      * @param userName String representing name of the client
      */
-    public ClackClient(String userName) throws IllegalArgumentException {
+    public ClackClient(String userName) throws IllegalArgumentException, IOException {
         this(userName, DEFAULT_HOSTNAME, DEFAULT_PORT);
     }
 
@@ -101,7 +113,7 @@ public class ClackClient {
      * Default Constructor. username is set to "anon" closeConnection defaults to true and port is set to the default.
      * The hostname is set to "localhost"
      */
-    public ClackClient() {
+    public ClackClient() throws IOException {
         this(DEFAULT_USER_NAME, DEFAULT_HOSTNAME, DEFAULT_PORT);
     }
 
@@ -109,6 +121,18 @@ public class ClackClient {
      * Starts the client
      */
     public void start() {
+        try {
+            ServerSocket SS = new ServerSocket(DEFAULT_PORT);
+            System.out.println("Server is up, waiting for request");
+            Socket clientSocket = SS.accept();
+        }
+        catch (IOException ioe){
+            System.err.println(ioe.getMessage());
+        }
+        BufferedReader inFromServer = new BufferedReader(
+                new InputStreamReader(clientSocket.getInputStream()));
+        PrintWriter outToServer = new PrintWriter(clientSocket.getOutputStream());
+
         inFromStd = new Scanner(System.in);
         closeConnection = false;
         while (!closeConnection) {
@@ -151,15 +175,32 @@ public class ClackClient {
 
     /**
      * Sends data to server
+     * outToServer has been initialized as null.
      */
     public void sendData() {
+        outToServer = null;
+        try{
+            dataToSendToServer = outToServer;
+        }
+        catch(IOException ioe){
+            System.err.println(ioe.getMessage());
+        }
 
     }
 
     /**
      * Receives data from the server, does not return anything
+     * inFromServer has been initialized as null.
      */
     public void receiveData() {
+        inFromServer = null;
+
+        try{
+            dataToSendToServer = new inFromServer();
+        }
+        catch(IOException ioe){
+            System.err.println(ioe.getMessage());
+        }
 
     }
 
