@@ -47,11 +47,49 @@ public class ClackServer {
     public static final int DEFAULT_PORT = 7000;
 
     /**
+     * Runs the program as a server.
+     * Running with zero arguments will host on DEFAULT_PORT
+     * One argument will be translated to a port number and the server will listen on that port.
+     * @param args either 0 or 1 args
+     */
+    public static void main(String[] args) {
+        ClackServer server;
+
+        if (args.length == 0) {
+            // No input means run on the default port
+            server = new ClackServer();
+        } else if (args.length == 1) {
+            // One input should be treated as a port
+            try {
+                int port = Integer.parseInt(args[0]);
+                server = new ClackServer(port);
+            } catch (NumberFormatException e) {
+                System.err.println("ERROR: Argument `port` could not be converted to an integer.");
+                System.exit(1);
+                return;
+            } catch (IllegalArgumentException e) {
+                System.err.println(e.getMessage());
+                System.exit(1);
+                return;
+            }
+        } else {
+            System.err.println("ERROR: Invalid number of arguments. Try:\n\tjava ClackServer [port]");
+            System.exit(1);
+            return;
+        }
+
+        server.start();
+    }
+
+    /**
      * Constructor that sets port number
      * set dataToReceiveFromClient and dataToSendToClient as null.
      * @param port port number
      */
-    public ClackServer(int port) {
+    public ClackServer(int port) throws IllegalArgumentException {
+        if (port < 1024 || port > 65535) {
+            throw new IllegalArgumentException("port must be between 1024 and 65535");
+        }
         this.port = port;
         this.closeConnection = true;
         this.dataToReceiveFromClient = null;

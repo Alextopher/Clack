@@ -5,27 +5,28 @@ By Humaira Rezaie and Christopher Mahoney.
 
 ## Part 3
 ### TODO list:
-- [ ] Make ClackData Serializable
-- [ ] ClackClient for Single Client Communication with Server
-- [ ] ObjectInputStream and ObjectOutputStream instance variables in ClackClient
-- [ ] The start() method in ClackClient
-- [ ] The sendData() method in ClackClient
-- [ ] The receiveData() method in ClackClient
-- [ ] ClackServer class for Single Client Communication with Server
-- [ ] ObjectInputStream and ObjectOutputStream, and ClackData instance variables in
+- [x] Make ClackData Serializable
+- [x] ClackClient for Single Client Communication with Server
+- [x] ObjectInputStream and ObjectOutputStream instance variables in ClackClient
+- [x] The start() method in ClackClient
+- [x] The sendData() method in ClackClient
+- [x] The receiveData() method in ClackClient
+- [x] ClackServer class for Single Client Communication with Server
+- [x] ObjectInputStream and ObjectOutputStream, and ClackData instance variables in
   ClackServer
-- [ ] The start() method in ClackServe
-- [ ] The receiveData() method in ClackServer
-- [ ] The sendData() method in ClackServer
-- [ ] IllegalArgumentException in ClackServer constructor
+- [x] The start() method in ClackServe
+- [x] The receiveData() method in ClackServer
+- [x] The sendData() method in ClackServer
+- [x] IllegalArgumentException in ClackServer constructor
 - [ ] Main method in ClackClient
 - [ ] Main method in ClackServer
 - [ ] Create JAR files
 - [ ] Running the ClackClient and ClackServer programs
+- [x] Javadoc comments, and Javadoc folder
 - [ ] Contributions reports
 
 ## Part 2
-###TODO list:
+### TODO list:
 - [x] Encryption and decryption methods
 - [x] Implementation of new constructor in MessageClackData
 - [x] Implementation of overloaded method getData in two MessageClackData and FileClackData classes
@@ -36,7 +37,6 @@ By Humaira Rezaie and Christopher Mahoney.
 - [x] Report with output from TestClackClient
 - [x] Javadoc comments, and Javadoc folder
 - [ ] Contributions reports
-
 
 ### Report
 For encryption, we used a slightly more complicated scheme. Instead of only being able to encode and decode english 
