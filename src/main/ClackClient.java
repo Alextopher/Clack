@@ -5,6 +5,10 @@ import data.FileClackData;
 import data.MessageClackData;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.security.Key;
 import java.util.*;
 
@@ -37,6 +41,16 @@ public class ClackClient {
      * ClackData object representing data received from the server
      */
     private ClackData dataToReceiveFromServer;
+
+    /**
+     * Stream to receive information from server, initialized to null
+     */
+    private ObjectInputStream inFromServer;
+
+    /**
+     * Stream to send information to server, initialized to null
+     */
+    private ObjectOutputStream outToServer;
 
 
     private java.util.Scanner inFromStd;
@@ -157,14 +171,30 @@ public class ClackClient {
      * Starts the client
      */
     public void start() {
+        Socket socket;
+
+        try {
+            socket = new Socket(hostName, port);
+            inFromServer = new ObjectInputStream(socket.getInputStream());
+            outToServer = new ObjectOutputStream(socket.getOutputStream());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return;
+        }
+
         inFromStd = new Scanner(System.in);
         closeConnection = false;
         while (!closeConnection) {
             readClientData();
-            dataToReceiveFromServer = dataToSendToServer;
-            if (dataToReceiveFromServer != null) {
-                printData();
-            }
+            sendData();
+            receiveData();
+            printData();
+        }
+
+        try {
+            socket.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -201,14 +231,24 @@ public class ClackClient {
      * Sends data to server
      */
     public void sendData() {
-
+        try {
+            outToServer.writeObject(dataToSendToServer);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**
      * Receives data from the server, does not return anything
      */
     public void receiveData() {
-
+        try {
+            dataToReceiveFromServer = (ClackData) inFromServer.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**
