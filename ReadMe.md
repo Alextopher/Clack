@@ -18,10 +18,10 @@ By Humaira Rezaie and Christopher Mahoney.
 - [x] The receiveData() method in ClackServer
 - [x] The sendData() method in ClackServer
 - [x] IllegalArgumentException in ClackServer constructor
-- [ ] Main method in ClackClient
-- [ ] Main method in ClackServer
-- [ ] Create JAR files
-- [ ] Running the ClackClient and ClackServer programs
+- [x] Main method in ClackClient
+- [x] Main method in ClackServer
+- [x] Create JAR files
+- [x] Running the ClackClient and ClackServer programs
 - [x] Javadoc comments, and Javadoc folder
 - [ ] Contributions reports
 

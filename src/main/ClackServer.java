@@ -110,27 +110,47 @@ public class ClackServer {
      * Starts the Server
      */
     public void start() {
+        System.out.print("Waiting for connection");
+
+        ServerSocket listener;
+        Socket socket;
+
         // Create listener socket
         try {
-            ServerSocket listener = new ServerSocket(port);
-            Socket socket = listener.accept();
-            inFromClient = new ObjectInputStream(socket.getInputStream());
+            listener = new ServerSocket(port);
+            socket = listener.accept();
             outToClient = new ObjectOutputStream(socket.getOutputStream());
+            inFromClient = new ObjectInputStream(socket.getInputStream());
         } catch (Exception e) {
             // Printing the stack trace here to better debug an issue if it arrives
-            e.printStackTrace();
             System.err.println(e.getMessage());
             return;
         }
 
+        closeConnection = false;
         System.out.print("Server started listening on localhost:");
         System.out.println(port);
 
         // send and receive data forever
         while (!closeConnection) {
             receiveData();
+            if (dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
+                break;
+            }
             dataToSendToClient = dataToReceiveFromClient;
             sendData();
+        }
+
+        try {
+            socket.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            listener.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
