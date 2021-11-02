@@ -57,6 +57,54 @@ public class ClackClient {
      */
     public static final String DEFAULT_USER_NAME = "Anon";
 
+    public static void main(String[] args) {
+        ClackClient client;
+        // case 1
+        try {
+            if (args.length == 0) {
+                client = new ClackClient();
+            } else if (args.length == 1) {
+                String[] s1 = args[0].split("@");
+                String username = s1[0];
+
+                if (s1.length == 1) {
+                    // just the name
+                    client = new ClackClient(username);
+                } else if (s1.length == 2) {
+                    // the name and host:port
+                    String[] s2 = s1[1].split(":");
+
+                    if (s2.length == 1) {
+                        String hostname = s2[0];
+                        client = new ClackClient(username, hostname);
+                    } else if (s2.length == 2) {
+                        String hostname = s2[0];
+                        int port = Integer.parseInt(s2[1]);
+                        client = new ClackClient(username, hostname, port);
+                    } else {
+                        throw new IllegalArgumentException(
+                            "ERROR: Invalid number of arguments. Try:\n\tjava ClackClient [name[@host[:port]]]"
+                        );
+                    }
+                } else {
+                    throw new IllegalArgumentException(
+                            "ERROR: Invalid number of arguments. Try:\n\tjava ClackClient [name[@host[:port]]]"
+                    );
+                }
+            } else {
+                throw new IllegalArgumentException(
+                        "ERROR: Invalid number of arguments. Try:\n\tjava ClackClient [name[@host[:port]]]"
+                );
+            }
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+            return;
+        }
+
+        System.out.println(client.toString());
+    }
+
     /**
      * Constructor that sets username, hostname and port. closeConnection defaults to true
      * @param userName String representing name of the client
