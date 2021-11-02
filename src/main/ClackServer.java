@@ -2,6 +2,11 @@ package main;
 
 import data.ClackData;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Objects;
 
 public class ClackServer {
@@ -27,6 +32,16 @@ public class ClackServer {
     private ClackData dataToSendToClient;
 
     /**
+     * Stream to receive information from client, initialized to null
+     */
+    private ObjectInputStream inFromClient;
+
+    /**
+     * Stream to send information to client, initialized to null
+     */
+    private ObjectOutputStream outToClient;
+
+    /**
      * default constructor that sets port to default port number 7000
      */
     public static final int DEFAULT_PORT = 7000;
@@ -41,6 +56,8 @@ public class ClackServer {
         this.closeConnection = true;
         this.dataToReceiveFromClient = null;
         this.dataToSendToClient = null;
+        this.inFromClient = null;
+        this.outToClient = null;
     }
 
     /**
@@ -55,21 +72,52 @@ public class ClackServer {
      * Starts the Server
      */
     public void start() {
+        // Create listener socket
+        try {
+            ServerSocket listener = new ServerSocket(port);
+            Socket socket = listener.accept();
+            inFromClient = new ObjectInputStream(socket.getInputStream());
+            outToClient = new ObjectOutputStream(socket.getOutputStream());
+        } catch (Exception e) {
+            // Printing the stack trace here to better debug an issue if it arrives
+            e.printStackTrace();
+            System.err.println(e.getMessage());
+            return;
+        }
 
+        System.out.print("Server started listening on localhost:");
+        System.out.println(port);
+
+        // send and receive data forever
+        while (!closeConnection) {
+            receiveData();
+            dataToSendToClient = dataToReceiveFromClient;
+            sendData();
+        }
     }
 
     /**
-     * receives the data from client
+     * Receives the data from client and sets dataToReceiveFromClient
      */
     public void receiveData() {
-
+        try {
+            dataToReceiveFromClient = (ClackData) inFromClient.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**
      * Sends data to client
      */
     public void sendData() {
-
+        try {
+            outToClient.writeObject(dataToSendToClient);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**
