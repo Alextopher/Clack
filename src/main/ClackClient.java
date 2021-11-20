@@ -1,6 +1,7 @@
 package main;
 
 import data.ClackData;
+import data.ClientSideServerListener;
 import data.FileClackData;
 import data.MessageClackData;
 
@@ -184,14 +185,17 @@ public class ClackClient {
 
         inFromStd = new Scanner(System.in);
         closeConnection = false;
+
+        Thread ct = new Thread(new ClientSideServerListener(this));
+        ct.start();
+
         while (!closeConnection) {
             readClientData();
             sendData();
             if (closeConnection) {
                 break;
             }
-            receiveData();
-            printData();
+
         }
 
         try {
@@ -199,6 +203,15 @@ public class ClackClient {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * implement the method ‘getCloseConnection() to
+     * determine if the connection is closed or not by returning the ‘closeConnection’ boolean
+     * variable.
+     */
+    public boolean getCloseConnection(){
+        return closeConnection;
     }
 
     /**
