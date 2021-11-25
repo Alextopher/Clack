@@ -1,6 +1,4 @@
-package data;
-
-import main.ClackClient;
+package main;
 
 /**
  * first we write a class ‘ClientSideServerListener’ that implements Runnable.
@@ -26,8 +24,9 @@ public class ClientSideServerListener implements Runnable {
      */
     @Override
     public void run() {
-        while (!client.getCloseConnection())
+        while (!client.getCloseConnection()) {
             client.receiveData();
             client.printData();
+        }
     }
 }

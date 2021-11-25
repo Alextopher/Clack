@@ -3,13 +3,15 @@ package main;
 import data.ClackData;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Objects;
+import java.util.ArrayList;
 
 public class ClackServer {
+    /**
+     * default constructor that sets port to default port number 7000
+     */
+    public static final int DEFAULT_PORT = 7000;
 
     /**
      * Integer representing port number on server connected to
@@ -17,34 +19,14 @@ public class ClackServer {
     private int port;
 
     /**
-     * boolean representing whether connection is closed or not
+     * boolean represents whether the server remains open or not to handle any client.
      */
     private boolean closeConnection;
 
     /**
-     * ClackData object representing data received from the client
+     * ArrayList consisting of all ServerSideClientIO objects
      */
-    private ClackData dataToReceiveFromClient;
-
-    /**
-     * ClackData object representing data sent to client
-     */
-    private ClackData dataToSendToClient;
-
-    /**
-     * Stream to receive information from client, initialized to null
-     */
-    private ObjectInputStream inFromClient;
-
-    /**
-     * Stream to send information to client, initialized to null
-     */
-    private ObjectOutputStream outToClient;
-
-    /**
-     * default constructor that sets port to default port number 7000
-     */
-    public static final int DEFAULT_PORT = 7000;
+    private ArrayList<ServerSideClientIO> serverSideClientIOList;
 
     /**
      * Runs the program as a server.
@@ -91,11 +73,8 @@ public class ClackServer {
             throw new IllegalArgumentException("port must be between 1024 and 65535");
         }
         this.port = port;
-        this.closeConnection = true;
-        this.dataToReceiveFromClient = null;
-        this.dataToSendToClient = null;
-        this.inFromClient = null;
-        this.outToClient = null;
+        this.closeConnection = false;
+        this.serverSideClientIOList = new ArrayList<>();
     }
 
     /**
@@ -106,110 +85,74 @@ public class ClackServer {
         this(DEFAULT_PORT);
     }
 
-    /**
-     * Starts the Server
-     */
     public void start() {
-        System.out.print("Waiting for connection");
-
         ServerSocket listener;
-        Socket socket;
 
         // Create listener socket
         try {
             listener = new ServerSocket(port);
-            socket = listener.accept();
-            outToClient = new ObjectOutputStream(socket.getOutputStream());
-            inFromClient = new ObjectInputStream(socket.getInputStream());
         } catch (Exception e) {
             // Printing the stack trace here to better debug an issue if it arrives
             System.err.println(e.getMessage());
             return;
         }
 
-        closeConnection = false;
-        System.out.print("Server started listening on localhost:");
-        System.out.println(port);
-
-        // send and receive data forever
+        System.out.print("Waiting for connections");
         while (!closeConnection) {
-            receiveData();
-            if (dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
-                break;
+            try {
+                Socket socket = listener.accept();
+                System.out.println(socket.toString());
+                ServerSideClientIO client = new ServerSideClientIO(this, socket);
+                serverSideClientIOList.add(client);
+
+                // Spawn a new thread to handle IO for the client
+                Thread t = new Thread(client);
+                t.start();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            dataToSendToClient = dataToReceiveFromClient;
-            sendData();
         }
 
-        try {
-            socket.close();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
+        System.out.print("Stopping Server");
         try {
             listener.close();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    /**
-     * Receives the data from client and sets dataToReceiveFromClient
-     */
-    public void receiveData() {
-        try {
-            dataToReceiveFromClient = (ClackData) inFromClient.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+            System.err.println("IOException: Failed to close the server listener");
             System.err.println(e.getMessage());
         }
     }
 
     /**
-     * Sends data to client
+     * This is a synchronized method that takes in a single ClackData object
+     * ‘dataToBroadcastToClients’. It should iterate through the list ‘serverSideClientIOList’. For
+     * every object in the list, call the object’s setDataToSendToClient() method to set the
+     * instance variable ‘dataToSendToClient’ in that object, and then call the object’s
+     * sendData() method to force the object to send the data to the corresponding client
      */
-    public void sendData() {
-        try {
-            outToClient.writeObject(dataToSendToClient);
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+    synchronized public void broadcast(ClackData dataToBroadcastToClients) {
+        System.out.println(dataToBroadcastToClients.toString());
+
+        for (ServerSideClientIO client: serverSideClientIOList) {
+            client.setDataToSendToClient(dataToBroadcastToClients);
+            client.sendData();
         }
     }
 
     /**
-     * Returns the port
+     * This is a synchronized method that takes in a single ServerSideClientIO
+     * object, and removes this object from the list ‘serverSideClientIOList’
+     * @param client ServerSideClientIO to remove
+     */
+    synchronized public void remove(ServerSideClientIO client) {
+        serverSideClientIOList.remove(client);
+    }
+
+    /**
+     * Returns the port the server is listening on
      *
      * @return port
      */
     public int getPort() {
         return port;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ClackServer that = (ClackServer) o;
-        return getPort() == that.getPort()
-                && closeConnection == that.closeConnection
-                && Objects.equals(dataToReceiveFromClient, that.dataToReceiveFromClient)
-                && Objects.equals(dataToSendToClient, that.dataToSendToClient);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getPort(), closeConnection, dataToReceiveFromClient, dataToSendToClient);
-    }
-
-    @Override
-    public String toString() {
-        return "ClackServer{" +
-                "port=" + port +
-                ", closeConnection=" + closeConnection +
-                ", dataToReceiveFromClient=" + dataToReceiveFromClient +
-                ", dataToSendToClient=" + dataToSendToClient +
-                '}';
     }
 }

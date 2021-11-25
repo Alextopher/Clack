@@ -1,16 +1,13 @@
 package main;
 
 import data.ClackData;
-import data.ClientSideServerListener;
 import data.FileClackData;
 import data.MessageClackData;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.Key;
 import java.util.*;
 
 
@@ -195,7 +192,6 @@ public class ClackClient {
             if (closeConnection) {
                 break;
             }
-
         }
 
         try {
@@ -222,7 +218,7 @@ public class ClackClient {
         inp = inFromStd.next();
         if (inp.matches("DONE")){
             closeConnection = true;
-            dataToSendToServer = new MessageClackData(this.userName, "goodbye", ClackData.CONSTANT_LOGOUT);
+//            dataToSendToServer = new MessageClackData(this.userName, "goodbye", ClackData.CONSTANT_LOGOUT);
         }
         else if (inp.matches("SENDFILE")) {
             FileClackData fileClackData = new FileClackData(this.userName, ClackData.CONSTANT_SENDFILE, inFromStd.next());
