@@ -15,6 +15,7 @@ package main;
 //        ‘broadcast’ in ClackServer.java.
 
 import data.ClackData;
+import data.ListUsersClackData;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -58,6 +59,11 @@ public class ServerSideClientIO implements Runnable {
      */
     private final Socket clientSocket;
 
+    /**
+     * The username the clients used on first connect
+     */
+    private String username;
+
     public ServerSideClientIO(ClackServer server, Socket clientSocket) {
         this.server = server;
         this.clientSocket = clientSocket;
@@ -67,6 +73,7 @@ public class ServerSideClientIO implements Runnable {
         this.dataToSendToClient = null;
         this.inFromClient = null;
         this.outToClient = null;
+        this.username = null;
     }
 
     /**
@@ -105,12 +112,21 @@ public class ServerSideClientIO implements Runnable {
         // send and receive data forever
         while (!closeConnection) {
             receiveData();
+
+            // If the client sends null data or if the client logs out then disconnect them
             if (dataToReceiveFromClient == null || dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
                 server.remove(this);
                 break;
             }
 
-            server.broadcast(dataToReceiveFromClient);
+            this.username = dataToReceiveFromClient.getUserName();
+            if (dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS) {
+                // LISTUSERS sends the user list to the client
+                server.listUsers(this);
+            } else {
+                // Everything else gets broadcasted
+                server.broadcast(dataToReceiveFromClient);
+            }
         }
 
         try {
@@ -143,11 +159,20 @@ public class ServerSideClientIO implements Runnable {
     /**
      * Sends data to client
      */
-    public void sendData() {
+    public synchronized void sendData() {
         try {
             outToClient.writeObject(dataToSendToClient);
         } catch (IOException e) {
-            // We don't care about errors here
+            // We don't care about errors here.
+            // We either drop the message because of the exception or we're already closing the connection
         }
+    }
+
+    /**
+     * Returns the username last used by the client. Could be null
+     * @return String username
+     */
+    public String getUserName() {
+        return username;
     }
 }

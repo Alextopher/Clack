@@ -2,6 +2,7 @@ package main;
 
 import data.ClackData;
 import data.FileClackData;
+import data.ListUsersClackData;
 import data.MessageClackData;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.*;
 
 public class ClackClient {
 
-    public static final String KEY = "XYPQR";
+    public static final String KEY = "QWdrOCwhPSVrczlydnNoYH1LTiciW3YvSltu";
 
     /**
      * String representing name of the client
@@ -218,6 +219,7 @@ public class ClackClient {
         inp = inFromStd.next();
         if (inp.matches("DONE")){
             closeConnection = true;
+            dataToSendToServer = null;
         }
         else if (inp.matches("SENDFILE")) {
             FileClackData fileClackData = new FileClackData(this.userName, ClackData.CONSTANT_SENDFILE, inFromStd.next());
@@ -230,7 +232,7 @@ public class ClackClient {
             }
         }
         else if (inp.matches("LISTUSERS")){
-
+            dataToSendToServer = new ListUsersClackData(this.userName);
         }
         else {
             dataToSendToServer = new MessageClackData(this.userName,inp + inFromStd.nextLine(), KEY,

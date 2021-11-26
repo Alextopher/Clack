@@ -1,6 +1,7 @@
 package main;
 
 import data.ClackData;
+import data.ListUsersClackData;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -145,6 +146,22 @@ public class ClackServer {
      */
     synchronized public void remove(ServerSideClientIO client) {
         serverSideClientIOList.remove(client);
+    }
+
+    /**
+     * This is a synchronized method that takes in a single ServerSideClientIO
+     * object, generates the current user list and sends it to that client
+     */
+    synchronized public void listUsers(ServerSideClientIO client) {
+        ArrayList<String> usernames = new ArrayList<>(serverSideClientIOList.size());
+
+        for (ServerSideClientIO c: serverSideClientIOList) {
+            usernames.add(c.getUserName());
+        }
+
+        System.out.println("LISTUSERS " + usernames);
+        client.setDataToSendToClient(new ListUsersClackData("SERVER", usernames));
+        client.sendData();
     }
 
     /**
