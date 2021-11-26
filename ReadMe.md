@@ -3,6 +3,76 @@ Clack _(Clarkson Slack)_ project for CS-242.
 
 By Humaira Rezaie and Christopher Mahoney.
 
+## Part 4
+### TODO list:
+No todo list this time
+
+### Report
+
+> In your write-up explain why you need two new classes for threading.
+
+The client and the server both have 2 separate jobs. They need to read incoming data and send outgoing data.
+We can no longer guarantee we're going to send _and then_ receive data, both tasks are going to happen independently.
+To support these two new tasks we create two new classes. These also have to happen concurrently, so they are threaded.
+
+> In your write-up, explain why there should be a separate class to receive data from the
+server and print it, and the client only gets data from the user and sends it to the server.
+Also, why is the class called a ‘listener’?
+
+In reverse order, this new class is a listener because its only task is to receive data from the server then print.
+In other words it's _listening_ to the server. Like we explained in the previous question this needs to be a separate
+class because reading + sending is now independent of receiving + printer. The new class facilitates adding this feature.
+
+> In your write-up, explain why you need a separate thread for each client, and why you
+cannot handle all clients in the main server thread. Conceptually, why is the listener
+class ‘ClientSideServerListener’ different from the class ‘ServerSideClientIO’?
+
+Receiving data from a socket is a _blocking_ call. If we handled all clients in the main server thread we could only
+listen to one at a time. In the best case this is very inefficient software that wastes a lot of time waiting and is a
+bad experience. Worst case we could actually miss that a client sent us data which make the software unreliable.
+
+Conceptually, the listener class `ClientSideServerListener` is different from the `ServerSideClientIO` class because
+the listener is "the client listening to the server" while the clientIO is the "server exchanging data the client".
+
+Something we would like to note is this application could be written with 2 threads per client. One thread which handles
+inputs from a client and one thread that handles outputs. Writing data to the client is also blocking, a poorly 
+performing or a poorly behaving client could create a lot of latency for the other clients in the current model.
+
+> In your write-up, explain why the broadcast() and remove() methods are synchronized.
+You may find it easier to answer this question after completing all programming.
+
+Fairly simple, `broadcast()` sends a message to each client `remove()` removes a client from the broadcast list.
+If these happen non-atomically `broadcast` could be loop into a client that no longer exists and errors will occur.
+The same logic holds with our synchronized new method `listUsers()`, the user list could change while we're reading it.
+
+> In your write-up, discuss all new methods and new code in existing
+methods that you wrote to handle LISTUSERS
+
+We did the more difficult task where only the client that asked recieves the user list
+
+We created a new class `ListUsersClackData`. When a client sends a `ListUsersClackData` message the 
+`ServerSideClientIO` calls `server.listUsers(client)` which creates the user list `ArrayList<String> usernames`. 
+Then we create a new `ListUsersClackData` which is sent to the client. 
+
+In `ServerSideClientIO` we suppress the normal call to `broadcast()`.
+
+We know the usernames of clients by tracking whatever username that was last used. This means clients could potentially
+change username whenever they like. Security implications doesn't seem like a big priority in the project. We'll leave
+it at that with a comment "we'll change it easily if you'd like to see different behavior".
+
+The "username" field of LISTUSERS isn't very helpful. The client includes their username as normal and when the server
+creates a `ListUsersClackData` it's given the uncreative username `"SERVER"`.
+
+The client displays the result of `LISTUSERS` like this:
+
+```
+LISTUSERS
+Fri Nov 26 17:18:07 EST 2021 | SERVER :
+[mahonec, test]
+```
+
+That's it!
+
 ## Part 3
 ### TODO list:
 - [x] Make ClackData Serializable

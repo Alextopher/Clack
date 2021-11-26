@@ -119,7 +119,9 @@ public class ServerSideClientIO implements Runnable {
                 break;
             }
 
+            // A client can change its username when ever it likes, this could easily be different behavior.
             this.username = dataToReceiveFromClient.getUserName();
+
             if (dataToReceiveFromClient.getType() == ClackData.CONSTANT_LISTUSERS) {
                 // LISTUSERS sends the user list to the client
                 server.listUsers(this);
