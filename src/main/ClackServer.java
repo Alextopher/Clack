@@ -97,7 +97,7 @@ public class ClackServer {
             return;
         }
 
-        System.out.print("Waiting for connections");
+        System.out.println("Waiting for connections");
         while (!closeConnection) {
             try {
                 Socket socket = listener.accept();

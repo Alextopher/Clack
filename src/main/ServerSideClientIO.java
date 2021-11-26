@@ -19,7 +19,6 @@ import data.ClackData;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerSideClientIO implements Runnable {
@@ -106,7 +105,7 @@ public class ServerSideClientIO implements Runnable {
         // send and receive data forever
         while (!closeConnection) {
             receiveData();
-            if (dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
+            if (dataToReceiveFromClient == null || dataToReceiveFromClient.getType() == ClackData.CONSTANT_LOGOUT) {
                 server.remove(this);
                 break;
             }
@@ -116,6 +115,7 @@ public class ServerSideClientIO implements Runnable {
 
         try {
             clientSocket.close();
+            server.remove(this);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -134,7 +134,7 @@ public class ServerSideClientIO implements Runnable {
         try {
             dataToReceiveFromClient = (ClackData) inFromClient.readObject();
         } catch (IOException e) {
-            e.printStackTrace();
+            closeConnection = true;
         } catch (ClassNotFoundException e) {
             System.err.println(e.getMessage());
         }
@@ -147,7 +147,7 @@ public class ServerSideClientIO implements Runnable {
         try {
             outToClient.writeObject(dataToSendToClient);
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            // We don't care about errors here
         }
     }
 }

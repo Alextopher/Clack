@@ -218,7 +218,6 @@ public class ClackClient {
         inp = inFromStd.next();
         if (inp.matches("DONE")){
             closeConnection = true;
-//            dataToSendToServer = new MessageClackData(this.userName, "goodbye", ClackData.CONSTANT_LOGOUT);
         }
         else if (inp.matches("SENDFILE")) {
             FileClackData fileClackData = new FileClackData(this.userName, ClackData.CONSTANT_SENDFILE, inFromStd.next());
@@ -257,7 +256,9 @@ public class ClackClient {
         try {
             dataToReceiveFromServer = (ClackData) inFromServer.readObject();
         } catch (IOException e) {
-            e.printStackTrace();
+            if (!closeConnection) {
+                closeConnection = true;
+            }
         } catch (ClassNotFoundException e) {
             System.err.println(e.getMessage());
         }
@@ -267,6 +268,8 @@ public class ClackClient {
      * prints the received data to standard output
      */
     public void printData() {
+        if (dataToReceiveFromServer == null) return;
+
         System.out.println(dataToReceiveFromServer.getDate() + " | "
                         + dataToReceiveFromServer.getUserName() + " :\n"
                         + dataToReceiveFromServer.getData(KEY)
